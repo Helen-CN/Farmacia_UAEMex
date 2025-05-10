@@ -1,0 +1,58 @@
+/* Importar fuentes de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;600&display=swap');
+
+:root {
+    --verde-uaemex: #006341;
+    --dorado-uaemex: #CBA135;
+}
+
+body {
+    font-family: 'Poppins', 'Roboto', 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    min-height: 100vh;
+    color: #333;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1);
+}
+
+.card, .tarjeta-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover, .tarjeta-hover:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(var(--verde-uaemex), 0.2);
+    cursor: pointer;
+}
+
+.card i {
+    transition: transform 0.3s ease;
+}
+
+.card:hover i {
+    transform: scale(1.1);
+}
+
+h5 {
+    padding-bottom: 5px;
+    display: inline-block;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+.badge {
+    font-size: 0.9rem;
+    vertical-align: middle;
+    font-family: 'Poppins', sans-serif;
+}

@@ -8,14 +8,15 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['rol_id'] != 1 && $_SESSION['r
 require_once '../conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $id = intval($_POST['id']);
     $nombre = trim($_POST['nombre']);
     $descripcion = trim($_POST['descripcion']); // Guardar como cadena vacía si está vacía, no como null
     $stock = intval($_POST['stock']);
     $precio = floatval($_POST['precio']);
     $proveedor_id = intval($_POST['proveedor_id']);
 
-    $stmt = $conn->prepare("INSERT INTO productos (nombre, descripcion, stock, precio, proveedor_id) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssidi", $nombre, $descripcion, $stock, $precio, $proveedor_id);
+    $stmt = $conn->prepare("UPDATE productos SET nombre = ?, descripcion = ?, stock = ?, precio = ?, proveedor_id = ? WHERE id = ?");
+    $stmt->bind_param("ssiddi", $nombre, $descripcion, $stock, $precio, $proveedor_id, $id);
 
     if ($stmt->execute()) {
         header("Location: productos.php?success=1");
