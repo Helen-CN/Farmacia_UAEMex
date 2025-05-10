@@ -8,7 +8,7 @@ if (!isset($_SESSION['usuario_id']) || ($_SESSION['rol_id'] != 1 && $_SESSION['r
 require_once '../conexion.php';
 
 // Usar la vista para listar productos con proveedor
-$sql = "SELECT id, nombre, stock, precio, proveedor FROM vista_stock_productos";
+$sql = "SELECT id, nombre, descripcion, stock, precio, proveedor FROM vista_stock_productos";
 $resultado = $conn->query($sql);
 
 $success = isset($_GET['success']) && $_GET['success'] == 1;
@@ -106,7 +106,7 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
                 <td><?= htmlspecialchars($p['nombre']) ?></td>
                 <td>
                     <?php
-                    $descripcion = $p['descripcion'] ?? 'Sin descripción';
+                    $descripcion = trim($p['descripcion']) !== '' ? $p['descripcion'] : 'Sin descripción';
                     echo htmlspecialchars($descripcion);
                     ?>
                 </td>
