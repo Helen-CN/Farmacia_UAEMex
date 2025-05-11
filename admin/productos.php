@@ -26,8 +26,12 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
 </head>
 <body>
 <div class="container mt-4">
-    <h3 class="mb-4">Productos Registrados</h3>
-    <a href="../dashboard.php" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Volver al Dashboard</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Productos Registrados</h3>
+        <a href="../dashboard.php" class="btn btn-outline-success">
+            <i class="bi bi-arrow-left"></i> Volver al Panel
+        </a>
+    </div>
 
     <!-- Formulario en un acordeón desplegable -->
     <div class="accordion mb-4" id="accordionForm">
@@ -64,7 +68,9 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
                             </select>
                         </div>
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-success"><i class="bi bi-capsule-pill"></i> Guardar Producto</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-capsule-pill"></i> Guardar Producto
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -105,10 +111,7 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
                 <td><?= $p['id'] ?></td>
                 <td><?= htmlspecialchars($p['nombre']) ?></td>
                 <td>
-                    <?php
-                    $descripcion = trim($p['descripcion']) !== '' ? $p['descripcion'] : 'Sin descripción';
-                    echo htmlspecialchars($descripcion);
-                    ?>
+                    <?= htmlspecialchars(trim($p['descripcion']) !== '' ? $p['descripcion'] : 'Sin descripción') ?>
                 </td>
                 <td><?= $p['stock'] ?></td>
                 <td>$<?= number_format($p['precio'], 2) ?></td>
@@ -148,11 +151,11 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    var confirmDeleteModal = document.getElementById('confirmDeleteModal');
+    const confirmDeleteModal = document.getElementById('confirmDeleteModal');
     confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        var id = button.getAttribute('data-id');
-        var confirmDeleteBtn = confirmDeleteModal.querySelector('#confirmDeleteBtn');
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const confirmDeleteBtn = confirmDeleteModal.querySelector('#confirmDeleteBtn');
         confirmDeleteBtn.href = 'productos_eliminar.php?id=' + id;
     });
 </script>

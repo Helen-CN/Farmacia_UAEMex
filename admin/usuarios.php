@@ -25,7 +25,12 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
 </head>
 <body>
 <div class="container mt-4">
-    <h3 class="mb-4">Usuarios Registrados</h3>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Usuarios Registrados</h3>
+        <a href="../dashboard.php" class="btn btn-outline-success">
+            <i class="bi bi-arrow-left"></i> Volver al Panel
+        </a>
+    </div>
 
     <!-- Formulario en un acordeón desplegable -->
     <div class="accordion mb-4" id="accordionForm">
