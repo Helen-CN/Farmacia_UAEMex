@@ -1,0 +1,67 @@
+body {
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    border: none;
+    border-radius: 20px;
+    padding: 2.5rem;
+    background-color: #ffffff;
+    box-shadow: 0 8px 25px rgba(0, 99, 65, 0.15); /* sombra con tono UAEMex */
+    transition: all 0.3s ease-in-out;
+}
+
+.login-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 99, 65, 0.2);
+}
+
+.logo-img {
+    max-width: 80px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+.input-group-text {
+    background-color: var(--verde-uaemex);
+    color: #fff;
+    border: none;
+}
+
+input.form-control:focus {
+    border-color: var(--verde-uaemex);
+    box-shadow: 0 0 0 0.2rem rgba(0, 99, 65, 0.25);
+}
+
+.btn-success {
+    background-color: var(--verde-uaemex);
+    border-color: var(--verde-uaemex);
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background-color: #004d34;
+    border-color: #004d34;
+}
+
+.alert {
+    font-size: 0.95rem;
+    margin-top: 1rem;
+}
+
+#togglePassword {
+    border: none;
+    background: transparent;
+    color: #6c757d;
+}
+
+#togglePassword:hover {
+    color: var(--verde-uaemex);
+}
