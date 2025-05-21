@@ -1,11 +1,13 @@
 <?php
 session_start();
+require_once __DIR__ . '/../config/conexion.php';
+require_once __DIR__ . '/../config/rutas.php';
+
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit();
 }
 
-require_once 'conexion.php';
 
 $nombre = $_SESSION['usuario_nombre'];
 $rol_id = $_SESSION['rol_id'];
@@ -31,7 +33,7 @@ $total_usuarios = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="css/estilos.css" rel="stylesheet">
+    <link href="<?= URL_BASE ?>/public/css/estilos.css" rel="stylesheet">
     <style>
         .tarjeta-hover:hover {
             transform: scale(1.05);
@@ -45,12 +47,12 @@ $total_usuarios = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: #006341;">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="img/logo-uaemex.png" alt="UAEMex" width="40" class="me-2">
+            <img src="<?= URL_BASE ?>/public/img/logo-uaemex.png" alt="UAEMex" width="40" class="me-2">
             <span class="fw-bold">Farmacia UAEMex</span>
         </a>
         <div class="d-flex align-items-center">
             <span class="text-white me-3"><i class="bi bi-person-circle me-1"></i><?= htmlspecialchars($nombre) ?> <span class="badge bg-warning text-dark"><?= $rol_nombre ?></span></span>
-            <a href="logout.php" class="btn btn-outline-warning btn-sm"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a>
+            <a href="<?= URL_BASE ?>/views/logout.php" class="btn btn-outline-warning btn-sm"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a>
         </div>
     </div>
 </nav>
@@ -96,7 +98,7 @@ $total_usuarios = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_
         <?php if ($rol_id == 1): ?>
             <h5 class="mt-4 text-success">Gestión Administrativa</h5>
             <div class="col-md-4">
-                <a href="admin/usuarios.php" class="text-decoration-none">
+                <a href="<?= URL_BASE ?>/admin/views/usuarios.php" class="text-decoration-none">
                     <div class="card h-100 shadow tarjeta-hover border-0">
                         <div class="card-body text-center">
                             <i class="bi bi-people-fill display-4 text-success"></i>
@@ -110,7 +112,7 @@ $total_usuarios = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_
         <?php if ($rol_id == 1 || $rol_id == 2): ?>
             <h5 class="mt-4 text-success">Gestión de Inventario</h5>
             <div class="col-md-4">
-                <a href="admin/productos.php" class="text-decoration-none">
+                <a href="<?= URL_BASE ?>/admin/views/productos.php" class="text-decoration-none">
                     <div class="card h-100 shadow tarjeta-hover border-0">
                         <div class="card-body text-center">
                             <i class="bi bi-capsule-pill display-4 text-primary"></i>
@@ -120,7 +122,7 @@ $total_usuarios = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="admin/proveedores.php" class="text-decoration-none">
+                <a href="<?= URL_BASE ?>/admin/views/proveedores.php" class="text-decoration-none">
                     <div class="card h-100 shadow tarjeta-hover border-0">
                         <div class="card-body text-center">
                             <i class="bi bi-truck display-4 text-secondary"></i>
@@ -130,7 +132,7 @@ $total_usuarios = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="admin/movimientos.php" class="text-decoration-none">
+                <a href="<?= URL_BASE ?>/admin/views/movimientos.php" class="text-decoration-none">
                     <div class="card h-100 shadow tarjeta-hover border-0">
                         <div class="card-body text-center">
                             <i class="bi bi-arrow-left-right display-4 text-info"></i>
@@ -144,7 +146,7 @@ $total_usuarios = $conn->query("SELECT COUNT(*) AS total FROM usuarios")->fetch_
         <?php if ($rol_id == 3): ?>
             <h5 class="mt-4 text-success">Auditoría</h5>
             <div class="col-md-4">
-                <a href="admin/reportes.php" class="text-decoration-none">
+                <a href="<?= URL_BASE ?>/admin/views/reportes.php" class="text-decoration-none">
                     <div class="card h-100 shadow tarjeta-hover border-0">
                         <div class="card-body text-center">
                             <i class="bi bi-graph-up display-4 text-warning"></i>

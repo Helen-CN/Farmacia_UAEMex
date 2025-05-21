@@ -1,11 +1,13 @@
 <?php
 session_start();
+
+require_once __DIR__ . '/../../config/rutas.php';
+require_once __DIR__ . '/../../config/conexion.php';
+
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) {
-    header("Location: ../login.php");
+    header("Location: " . URL_BASE . "/views/login.php");
     exit();
 }
-
-require_once '../conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $id = intval($_POST['id']);
@@ -19,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt_check->bind_param("si", $correo, $id);
     $stmt_check->execute();
     if ($stmt_check->get_result()->num_rows > 0) {
-        header("Location: usuarios_editar.php?id=$id&error=duplicate");
+        header("Location: " . URL_BASE . "/admin/views/usuarios_editar.php?id=$id&error=duplicate");
         exit();
     }
     $stmt_check->close();
@@ -33,9 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($stmt->execute()) {
-        header("Location: usuarios.php?success=1");
+        header("Location: " . URL_BASE . "/admin/views/usuarios.php?success=1");
     } else {
-        header("Location: usuarios.php?error=1");
+        header("Location: " . URL_BASE . "/admin/views/usuarios.php?error=1");
     }
 
     $stmt->close();

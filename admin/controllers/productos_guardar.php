@@ -1,11 +1,13 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/rutas.php';
+
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['rol_id'] != 1 && $_SESSION['rol_id'] != 2)) {
-    header("Location: ../login.php");
+    header("Location: " . URL_BASE . "/views/login.php");
     exit();
 }
 
-require_once '../conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = trim($_POST['nombre']);
@@ -18,9 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("ssidi", $nombre, $descripcion, $stock, $precio, $proveedor_id);
 
     if ($stmt->execute()) {
-        header("Location: productos.php?success=1");
+        header("Location: ../views/productos.php?success=1");
     } else {
-        header("Location: productos.php?error=1");
+        header("Location: ../views/productos.php?error=1");
     }
 
     $stmt->close();

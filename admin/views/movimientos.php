@@ -1,11 +1,13 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/rutas.php';
+
 if (!isset($_SESSION['usuario_id']) || ($_SESSION['rol_id'] != 1 && $_SESSION['rol_id'] != 2)) {
-    header("Location: ../login.php");
+    header("Location: " . URL_BASE . "/views/login.php");
     exit();
 }
 
-require_once '../conexion.php';
 
 $productos = $conn->query("SELECT id, nombre FROM productos");
 
@@ -25,15 +27,15 @@ $movimientos = $conn->query("
     <meta charset="UTF-8">
     <title>Movimientos de Inventario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/estilos.css" rel="stylesheet">
+    <link href="<?= URL_BASE ?>/public/css/estilos.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-4">
     <h3 class="mb-4">Registrar Movimiento</h3>
-    <a href="../dashboard.php" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left-circle"></i> Volver al Dashboard</a>
+    <a href="<?= URL_BASE ?>/views/dashboard.php" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left-circle"></i> Volver al Panel</a>
 
-    <form action="movimientos_guardar.php" method="POST" class="row g-3 mb-4">
+    <form action="<?= URL_BASE ?>/admin/controllers/movimientos_guardar.php" method="POST" class="row g-3 mb-4">
         <div class="col-md-4">
             <select name="producto_id" class="form-select" required>
                 <option value="">Seleccionar producto</option>

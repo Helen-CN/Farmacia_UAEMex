@@ -1,14 +1,15 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario_id']) || ($_SESSION['rol_id'] != 1 && $_SESSION['rol_id'] != 2)) {
-    header("Location: ../login.php");
+require_once __DIR__ . '/../../config/rutas.php';
+require_once __DIR__ . '/../../config/conexion.php';
+
+if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) {
+    header("Location: " . URL_BASE . "/../../views/login.php");
     exit();
 }
 
-require_once '../conexion.php';
-
-// Usar la vista para listar productos con proveedor
-$sql = "SELECT id, nombre, descripcion, stock, precio, proveedor FROM vista_stock_productos";
+// Usar la vista en lugar de la consulta con JOIN
+$sql = "SELECT id, nombre, correo, rol FROM vista_usuarios_roles";
 $resultado = $conn->query($sql);
 
 $success = isset($_GET['success']) && $_GET['success'] == 1;
@@ -19,16 +20,15 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Productos - Farmacia UAEMex</title>
+    <title>Gestión de Usuarios - Farmacia UAEMex</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="../css/estilos.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0">Productos Registrados</h3>
-        <a href="../dashboard.php" class="btn btn-outline-success">
+        <h3 class="mb-0">Usuarios Registrados</h3>
+        <a href="<?= URL_BASE ?>/views/dashboard.php" class="btn btn-outline-success">
             <i class="bi bi-arrow-left"></i> Volver al Panel
         </a>
     </div>
@@ -38,39 +38,34 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingForm">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="true" aria-controls="collapseForm">
-                    <i class="bi bi-capsule-pill me-2"></i> Agregar nuevo producto
+                    <i class="bi bi-person-plus me-2"></i> Agregar nuevo usuario
                 </button>
             </h2>
             <div id="collapseForm" class="accordion-collapse collapse show" aria-labelledby="headingForm" data-bs-parent="#accordionForm">
                 <div class="accordion-body">
-                    <form action="productos_guardar.php" method="POST" class="row g-3">
-                        <div class="col-md-3">
-                            <input type="text" name="nombre" class="form-control" placeholder="Nombre del producto" required>
+                    <form action="<?= URL_BASE ?>/admin/controllers/usuarios_guardar.php" method="POST"  class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" name="nombre" class="form-control" placeholder="Nombre completo" required>
                         </div>
-                        <div class="col-md-3">
-                            <textarea name="descripcion" class="form-control" placeholder="Descripción"></textarea>
+                        <div class="col-md-4">
+                            <input type="email" name="correo" class="form-control" placeholder="Correo electrónico" required>
                         </div>
-                        <div class="col-md-2">
-                            <input type="number" name="stock" class="form-control" placeholder="Stock inicial" value="0" required>
+                        <div class="col-md-4">
+                            <input type="password" name="contrasena" class="form-control" placeholder="Contraseña" required>
                         </div>
-                        <div class="col-md-2">
-                            <input type="number" step="0.01" name="precio" class="form-control" placeholder="Precio" required>
-                        </div>
-                        <div class="col-md-2">
-                            <select name="proveedor_id" class="form-select" required>
-                                <option value="">Seleccione proveedor</option>
+                        <div class="col-md-4">
+                            <select name="rol_id" class="form-select" required>
+                                <option value="">Seleccione rol</option>
                                 <?php
-                                $proveedores = $conn->query("SELECT id, nombre FROM proveedores");
-                                while ($prov = $proveedores->fetch_assoc()) {
-                                    echo "<option value='{$prov['id']}'>{$prov['nombre']}</option>";
+                                $roles = $conn->query("SELECT id, nombre FROM roles");
+                                while ($rol = $roles->fetch_assoc()) {
+                                    echo "<option value='{$rol['id']}'>{$rol['nombre']}</option>";
                                 }
                                 ?>
                             </select>
                         </div>
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-capsule-pill"></i> Guardar Producto
-                            </button>
+                            <button type="submit" class="btn btn-success"><i class="bi bi-person-plus"></i> Guardar Usuario</button>
                         </div>
                     </form>
                 </div>
@@ -92,35 +87,29 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
         </div>
     <?php endif; ?>
 
-    <!-- Tabla de productos -->
+    <!-- Tabla de usuarios -->
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Stock</th>
-                <th>Precio</th>
-                <th>Proveedor</th>
+                <th>Correo</th>
+                <th>Rol</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-        <?php while ($p = $resultado->fetch_assoc()): ?>
+        <?php while ($fila = $resultado->fetch_assoc()): ?>
             <tr>
-                <td><?= $p['id'] ?></td>
-                <td><?= htmlspecialchars($p['nombre']) ?></td>
+                <td><?= $fila['id'] ?></td>
+                <td><?= htmlspecialchars($fila['nombre']) ?></td>
+                <td><?= htmlspecialchars($fila['correo']) ?></td>
+                <td><?= $fila['rol'] ?></td>
                 <td>
-                    <?= htmlspecialchars(trim($p['descripcion']) !== '' ? $p['descripcion'] : 'Sin descripción') ?>
-                </td>
-                <td><?= $p['stock'] ?></td>
-                <td>$<?= number_format($p['precio'], 2) ?></td>
-                <td><?= htmlspecialchars($p['proveedor']) ?></td>
-                <td>
-                    <a href="productos_editar.php?id=<?= $p['id'] ?>" class="btn btn-warning btn-sm">
+                    <a href="<?= URL_BASE ?>/admin/controllers/usuarios_editar.php?id=<?= $fila['id'] ?>" class="btn btn-warning btn-sm">
                         <i class="bi bi-pencil-square"></i> Editar
                     </a>
-                    <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="<?= $p['id'] ?>">
+                    <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="<?= $fila['id'] ?>">
                         <i class="bi bi-trash"></i> Eliminar
                     </a>
                 </td>
@@ -139,7 +128,7 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
+                ¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -151,13 +140,17 @@ $error = isset($_GET['error']) && $_GET['error'] == 1;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+    var confirmDeleteModal = document.getElementById('confirmDeleteModal');
     confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const id = button.getAttribute('data-id');
-        const confirmDeleteBtn = confirmDeleteModal.querySelector('#confirmDeleteBtn');
-        confirmDeleteBtn.href = 'productos_eliminar.php?id=' + id;
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-id');
+        var confirmDeleteBtn = confirmDeleteModal.querySelector('#confirmDeleteBtn');
+
+        // Construir URL usando PHP para asegurar la ruta correcta
+        var urlEliminar = "<?= URL_BASE ?>/admin/controllers/usuarios_eliminar.php?id=" + id;
+        confirmDeleteBtn.href = urlEliminar;
     });
 </script>
+
 </body>
 </html>

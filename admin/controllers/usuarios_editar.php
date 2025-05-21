@@ -1,11 +1,13 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../config/rutas.php';
+require_once __DIR__ . '/../../config/conexion.php';
+
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) {
-    header("Location: ../login.php");
+    header("Location: " . URL_BASE . "/views/login.php");
     exit();
 }
 
-require_once '../conexion.php';
 
 $id = intval($_GET['id']);
 $stmt = $conn->prepare("SELECT nombre, correo, rol_id FROM usuarios WHERE id = ?");
@@ -15,7 +17,7 @@ $usuario = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$usuario) {
-    header("Location: admin/usuarios.php");
+    header("Location: " . URL_BASE . "/admin/views/usuarios.php");
     exit();
 }
 ?>
@@ -32,10 +34,10 @@ if (!$usuario) {
 <body>
 <div class="container mt-5">
     <h3 class="text-success">Editar Usuario</h3>
-    <a href="usuarios.php" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Volver</a>
+    <a href="<?= URL_BASE ?>/admin/views/usuarios.php" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Volver</a>
 
     <div class="card p-4 shadow-sm">
-        <form action="usuarios_actualizar.php" method="POST" class="row g-3">
+        <form action="<?= URL_BASE ?>/admin/controllers/usuarios_actualizar.php" method="POST" class="row g-3">
             <input type="hidden" name="id" value="<?= $id ?>">
             <div class="col-md-4">
                 <label for="nombre" class="form-label">Nombre completo</label>
@@ -64,7 +66,7 @@ if (!$usuario) {
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Actualizar</button>
-                <a href="usuarios.php" class="btn btn-danger ms-2"><i class="bi bi-x-lg"></i> Cancelar</a>
+                <a href="<?= URL_BASE ?>/admin/views/usuarios.php" class="btn btn-danger ms-2"><i class="bi bi-x-lg"></i> Cancelar</a>
             </div>
         </form>
     </div>

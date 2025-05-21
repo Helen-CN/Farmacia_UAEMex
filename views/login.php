@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/../config/rutas.php';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,7 +34,7 @@
         <div class="col-md-5">
             <div class="card login-card shadow-lg">
                 <div class="text-center mb-4">
-                    <img src="img/logo-uaemex.png" class="logo-img mb-2" alt="UAEMex">
+                    <img src="<?= URL_BASE ?>/public/img/logo-uaemex.png" class="logo-img mb-2" alt="UAEMex">
                     <h4 class="fw-bold text-success">Farmacia Universitaria</h4>
                     <small class="text-muted">Acceso institucional</small>
                 </div>
@@ -40,7 +43,7 @@
                     <div class="alert alert-danger"><?= htmlspecialchars($_GET['error']) ?></div>
                 <?php endif; ?>
 
-                <form action="procesar_login.php" method="POST">
+                <form action="<?= URL_BASE ?>/controllers/procesar_login.php" method="POST">
                     <div class="mb-3">
                         <label for="correo" class="form-label">Correo institucional</label>
                         <div class="input-group">

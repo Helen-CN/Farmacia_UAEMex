@@ -1,11 +1,12 @@
 <?php
 session_start();
+require_once __DIR__ . '/../config/rutas.php';
+require_once __DIR__ . '/../config/conexion.php';
+
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 4) {
-    header("Location: login.php");
+    header("Location: " . URL_BASE . "/views/login.php");
     exit();
 }
-
-require_once 'conexion.php';
 
 $productos = $conn->query("SELECT id, nombre, stock FROM productos WHERE stock > 0");
 ?>
@@ -20,9 +21,9 @@ $productos = $conn->query("SELECT id, nombre, stock FROM productos WHERE stock >
 <body class="bg-light">
 <div class="container mt-5">
     <h3>Solicitar Medicamento</h3>
-    <a href="alumno_panel.php" class="btn btn-secondary mb-3">← Volver</a>
+    <a href="<?= URL_BASE ?>/views/alumno_panel.php" class="btn btn-secondary mb-3">← Volver</a>
 
-    <form action="solicitar_guardar.php" method="POST">
+    <form action="<?= URL_BASE ?>/controllers/solicitar_guardar.php" method="POST">
         <div class="mb-3">
             <label for="producto_id" class="form-label">Selecciona el medicamento</label>
             <select name="producto_id" class="form-select" required>

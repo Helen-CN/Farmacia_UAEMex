@@ -1,13 +1,15 @@
 <?php
 session_start();
-require_once 'conexion.php';
+require_once __DIR__ . '/../config/conexion.php';
+require_once __DIR__ . '/../config/rutas.php';
+
 
 $correo = $_POST['correo'];
 $contrasena = $_POST['contrasena'];
 
 // Validar correo institucional (acepta @uaemex.mx y @alumno.uaemex.mx)
 if (!preg_match('/^.+@(alumno\.)?uaemex\.mx$/', $correo)) {
-    header("Location: login.php?error=Correo institucional inválido");
+    header("Location: " . URL_BASE . "/views/login.php?error=Correo institucional inválido");
     exit();
 }
 
@@ -29,12 +31,12 @@ if ($result->num_rows === 1) {
         $_SESSION['rol_id'] = $usuario['rol_id'];
 
         if ($usuario['rol_id'] == 4) {
-            header("Location: alumno_panel.php");
+            header("Location: " . URL_BASE . "/views/alumno_panel.php");
         } else {
-            header("Location: dashboard.php");
+            header("Location: " . URL_BASE . "/views/dashboard.php");
         }
     } else {
-        header("Location: login.php?error=Contraseña incorrecta");
+        header("Location: " . URL_BASE . "/views/login.php?error=Contraseña incorrecta");
     }
     exit();
 } elseif ($esAlumno) {
@@ -53,14 +55,14 @@ if ($result->num_rows === 1) {
         $_SESSION['usuario_nombre'] = $nombreAuto;
         $_SESSION['rol_id'] = $rol_id;
 
-        header("Location: alumno_panel.php");
+        header("Location: " . URL_BASE . "/views/alumno_panel.php");
         exit();
     } else {
         // Ya existía ese correo
-        header("Location: login.php?error=El correo ya está registrado");
+        header("Location: " . URL_BASE . "/views/login.php?error=El correo ya está registrado");
         exit();
     }
 } else {
-    header("Location: login.php?error=Usuario no autorizado");
+    header("Location: " . URL_BASE . "/views/login.php?error=Usuario no autorizado");
     exit();
 }

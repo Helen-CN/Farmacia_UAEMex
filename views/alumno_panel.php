@@ -1,7 +1,9 @@
 <?php
 session_start();
+require_once __DIR__ . '/../config/rutas.php';
+
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 4) {
-    header("Location: login.php");
+    header("Location: " . URL_BASE . "/views/login.php");
     exit();
 }
 
@@ -20,10 +22,10 @@ $nombre = $_SESSION['usuario_nombre'];
     <div class="alert alert-success">
         <h4>Bienvenido, <?= htmlspecialchars($nombre) ?>!</h4>
         <p>Este es tu panel como alumno. Aquí puedes solicitar medicamentos.</p>
-        <a href="logout.php" class="btn btn-danger btn-sm">Cerrar sesión</a>
+        <a href="<?= URL_BASE ?>/views/logout.php" class="btn btn-danger btn-sm">Cerrar sesión</a>
     </div>
 
-    <a href="solicitar_medicamento.php" class="btn btn-primary w-100">
+    <a href="<?= URL_BASE ?>/views/solicitar_medicamento.php" class="btn btn-primary w-100">
         <i class="bi bi-capsule"></i> Solicitar Medicamento
     </a>
 </div>

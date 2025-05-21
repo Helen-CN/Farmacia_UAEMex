@@ -1,11 +1,12 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../config/rutas.php';
+require_once __DIR__ . '/../../config/conexion.php';
+
 if (!isset($_SESSION['usuario_id']) || $_SESSION['rol_id'] != 1) {
-    header("Location: ../login.php");
+    header("Location: " . URL_BASE . "/views/login.php");
     exit();
 }
-
-require_once '../conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = trim($_POST['nombre']);
@@ -17,9 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("sssi", $nombre, $correo, $contrasena, $rol_id);
 
     if ($stmt->execute()) {
-        header("Location: usuarios.php");
+        header("Location: " . URL_BASE . "/admin/views/usuarios.php?success=1");
     } else {
-        echo "Error al guardar: " . $conn->error;
+        header("Location: " . URL_BASE . "/admin/views/usuarios.php?error=1");
     }
 
     $stmt->close();
